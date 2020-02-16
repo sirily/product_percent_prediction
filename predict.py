@@ -33,7 +33,7 @@ def main(argv):
       sys.exit(2)
    for opt, arg in opts:
         if opt == '-h':
-            print('Predict product procent\nUsage: predict.py -i <inputfile> -o <outputfile>\nInput file must be in .csv format without date column')
+            print('Predict product percent\nUsage: predict.py -i <inputfile> -o <outputfile>\nInput file must be in .csv format without date column')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             predictions.append(score(arg))
