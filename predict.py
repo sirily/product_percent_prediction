@@ -4,7 +4,7 @@ import sys, getopt, pickle
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from xgboost import XGBRegressor
+import xgboost as xgb
 
 def score(inputfile):
     X = pd.read_csv(inputfile)
@@ -12,19 +12,18 @@ def score(inputfile):
         print('Invalid input')
 
     else:
-        with open('finalized_model.pkl', 'rb') as fin:
+        with open('data/finalized_model.pkl', 'rb') as fin:
             scaler, clf = pickle.load(fin)
 
         if X.shape[1] > 18:
             print('Invalid shape! Must be 18 columns, only sensor data')
         else:
             inp = scaler.transform(X)
-            return clf.predict(inp)
+            return clf.predict(xgb.DMatrix(inp))
 
     
 
 def main(argv):
-   inputfile = ''
    outputfile = ''
    predictions = []
    try:
@@ -34,7 +33,7 @@ def main(argv):
       sys.exit(2)
    for opt, arg in opts:
         if opt == '-h':
-            print('predict.py -i <inputfile> -o <outputfile>')
+            print('Predict product procent\nUsage: predict.py -i <inputfile> -o <outputfile>\nInput file must be in .csv format without date column')
             sys.exit()
         elif opt in ("-i", "--ifile"):
             predictions.append(score(arg))
